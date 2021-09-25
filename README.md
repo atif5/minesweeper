@@ -8,10 +8,10 @@ execute it as a package:
 
 this creates game session with a 8x8 minefield that has 10 bombs by default.
 
-you can create custom minefields.
+you can create custom minefields as well.
 
 
-### custom minefields
+#### custom minefields
 now you can create custom minefields, games using:
 
 ```$ python3 -m minesweeper -c "(w, h)" mine_amount```
