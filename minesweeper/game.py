@@ -108,7 +108,9 @@ def game():
 	while not game_over:
 
 		for event in pygame.event.get():
-			pass
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				sys.exit()
 
 		
 		if pygame.mouse.get_pressed()[0]:
