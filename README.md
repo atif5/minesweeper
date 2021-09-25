@@ -12,7 +12,7 @@ you can create custom minefields as well.
 
 
 #### custom minefields
-now you can create custom minefields, games using:
+now you can create custom minefields, game sessions using:
 
 ```$ python3 -m minesweeper -c "(w, h)" mine_amount```
 
