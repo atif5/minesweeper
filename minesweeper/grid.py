@@ -109,7 +109,7 @@ class MineFieldGrid():
 		self.cell_size = cell_size
 		self.mine_amount = mine_amount
 
-		self.height, self.width = size[0], size[1]
+		self.width, self.height = size[0], size[1]
 
 		self.cell_amount = self.height*self.width
 
