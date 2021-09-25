@@ -60,7 +60,9 @@ def explore(starting_cell, grid):
 
 	for neighbour_name in starting_cell.neighbour_names:
 		explored_cells.append(grid.cells[neighbour_name])
-
+		
+	for cell in explored_cells:
+		cell.reveal(grid.cells, sprites)
 
 
 	recursiveness = 100
