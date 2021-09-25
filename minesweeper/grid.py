@@ -20,7 +20,7 @@ class Cell():
 		self.surface = pygame.Surface(self.size)
 		self.surface.fill((171, 174, 171))
 
-		grid_side_length = grid.side_length
+		grid_side_length = grid.width
 
 		self.position = (self.size[0]*(self.num%grid_side_length), self.size[0]*(self.num//grid_side_length))
 
@@ -34,7 +34,7 @@ class Cell():
 
 	def handle_neighbours(self, grid):
 
-		grid_side_length = grid.side_length
+		grid_side_length = grid.width
 
 
 		if self.num % grid_side_length == 0:
@@ -109,9 +109,9 @@ class MineFieldGrid():
 		self.cell_size = cell_size
 		self.mine_amount = mine_amount
 
-		self.side_length = size[0]
+		self.height, self.width = size[0], size[1]
 
-		self.cell_amount = self.side_length**2
+		self.cell_amount = self.height*self.width
 
 		self.cells = {f"cell{i}": Cell(status='unrevealed', role=None, num=i, grid=self, size=cell_size) for i in range(self.cell_amount)}
 

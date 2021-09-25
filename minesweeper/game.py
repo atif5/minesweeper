@@ -30,11 +30,22 @@ sprites = {
         }
 
 
+try:
+	if sys.argv[1] == '-c':
+		minefield = MineFieldGrid(size=eval(sys.argv[2]), mine_amount=int(sys.argv[3]))
+
+		if minefield.mine_amount >= minefield.cell_amount:
+			print('invalid configuration!')
+
+			sys.exit()	
+
+except IndexError:
+	minefield = MineFieldGrid()
 
 
-minefield = MineFieldGrid()
 
-screen = pygame.display.set_mode(size=(minefield.size[0]*minefield.cell_size[0], minefield.size[1]*minefield.cell_size[1]))
+
+screen = pygame.display.set_mode(size=(minefield.width*minefield.cell_size[0], minefield.height*minefield.cell_size[1]))
 
 pygame.display.set_caption('minesweeper')
 pygame.display.set_icon(sprites['icon'])
