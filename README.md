@@ -18,5 +18,7 @@ example:
 
 ```$ python3 -m minesweeper -c "(20, 15)" 30```
 
+creates a minefield with the size 20x15 that has 30 mines.
+
 ## requirements
 only pygame, run `pip install -r requirements.txt` to satisfy.
