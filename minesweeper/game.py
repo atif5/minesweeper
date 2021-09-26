@@ -172,7 +172,7 @@ def game():
 		if false_flags == 0 and flagged_mines == minefield.mine_amount:
 			game_over = True
 
-			print('you win')
+			print('you win!')
 
 			#todo: call (but first define) a function that renders a "you win" message (on the pygame window)
 
