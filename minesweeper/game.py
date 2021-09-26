@@ -3,7 +3,6 @@
 from .grid import *
 from time import sleep
 
-import sys
 
 
 
@@ -60,9 +59,10 @@ def explore(starting_cell, grid):
 
 	for neighbour_name in starting_cell.neighbour_names:
 		explored_cells.append(grid.cells[neighbour_name])
-		
+
 	for cell in explored_cells:
 		cell.reveal(grid.cells, sprites)
+
 
 
 	recursiveness = 100
@@ -138,6 +138,10 @@ def game():
 						elif cell.role == 'mine' and cell.status != 'flagged':
 							game_over = True
 
+							print('you lose!')
+
+							#todo: call (but first define) a function that renders a "you lose" message (on the pygame window)
+
 							for cell in minefield.cells.values():
 								if cell.role == 'mine':
 									cell.reveal(minefield.cells, sprites)
@@ -157,9 +161,20 @@ def game():
 
 
 
+
 		
 		for cell in minefield.cells.values():
 			cell.exist(screen)
+
+		flagged_mines = len([cell for cell in minefield.cells.values() if cell.status == 'flagged' and cell.role == 'mine'])
+		false_flags = len([cell for cell in minefield.cells.values() if cell.status == 'flagged' and cell.role != 'mine'])
+
+		if false_flags == 0 and flagged_mines == minefield.mine_amount:
+			game_over = True
+
+			print('you win')
+
+			#todo: call (but first define) a function that renders a "you win" message (on the pygame window)
 
 		if game_over:
 			pygame.display.flip()

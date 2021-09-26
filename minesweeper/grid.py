@@ -4,6 +4,8 @@
 import pygame
 from random import sample
 
+import sys
+
 
 
 
@@ -125,7 +127,12 @@ class MineFieldGrid():
 		for neighbour_name in starting_cell.neighbour_names:
 			ints_to_choose.remove(self.cells[neighbour_name].num)
 
-		rand_ints = sample(ints_to_choose, self.mine_amount)
+		try:	
+			rand_ints = sample(ints_to_choose, self.mine_amount)
+		except ValueError:
+			print('invalid configuration!')
+			sys.exit()
+
 
 		
 		for cell in self.cells.values():
