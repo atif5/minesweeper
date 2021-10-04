@@ -99,7 +99,7 @@ class Cell():
 		else:
 			self.status = 'unrevealed'
 			self.surface = pygame.Surface(self.size)
-			self.surface.fill((171, 174, 171))
+			self.surface.fill(GRAY)
 
 
 
