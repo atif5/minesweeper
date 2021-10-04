@@ -4,7 +4,12 @@
 import pygame
 from random import sample
 
-import sys
+
+
+
+GRAY = (171, 174, 171)
+RED = (255, 0, 0)
+
 
 
 
@@ -20,11 +25,11 @@ class Cell():
 		self.name = f"cell{self.num}"
 
 		self.surface = pygame.Surface(self.size)
-		self.surface.fill((171, 174, 171))
+		self.surface.fill(GRAY)
 
 		grid_side_length = grid.width
 
-		self.position = (self.size[0]*(self.num%grid_side_length), self.size[0]*(self.num//grid_side_length))
+		self.position = (self.size[0]*(self.num%grid_side_length), self.size[0]*(self.num//grid_side_length)+30)
 
 		self.rect = self.surface.get_rect()
 		self.rect.move_ip(self.position)
@@ -62,9 +67,8 @@ class Cell():
 	
 
 	def exist(self, surface):
-		
 		surface.blit(self.surface, self.position)
-		pygame.draw.rect(surface, (255,0,0), self.rect, width=3)
+		pygame.draw.rect(surface, RED, self.rect, width=3)
 
 
 	def reveal(self, cells, sprites):
@@ -129,6 +133,7 @@ class MineFieldGrid():
 
 		try:	
 			rand_ints = sample(ints_to_choose, self.mine_amount)
+		
 		except ValueError:
 			print('invalid configuration!')
 			sys.exit()
