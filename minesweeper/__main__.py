@@ -20,5 +20,11 @@ except IndexError:
 
 game = Minesweepergame(minefield)
 
+
+
+
+
+
+
 if __name__ == '__main__':
     game.main_loop()
