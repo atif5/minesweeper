@@ -153,20 +153,3 @@ class MineFieldGrid():
 		for cell in self.cells.values():
 			if cell.role != 'mine' and cell.role != 'number':
 				cell.role = 'empty'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
