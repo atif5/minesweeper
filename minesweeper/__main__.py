@@ -6,7 +6,7 @@ from .game import (
     Minesweepergame, MineFieldGrid)
 
 
-def main()
+def main():
     minefield = MineFieldGrid()
 
     if len(sys.argv) > 1 and sys.argv[1] in ['-c', '--custom']:
