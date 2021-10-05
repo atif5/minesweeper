@@ -4,12 +4,12 @@ import time
 import pygame
 
 from .grid import (
-    Cell, MineFieldGrid)
+    Cell, MineFieldGrid, RED, GRAY)
 from .timer import Timer
 
 class Minesweepergame:
     pygame.font.init()
-    
+
     font    = pygame.font.SysFont('mainfont', 25)
     sprites = {
         '1': pygame.image.load('minesweeper/sprites/1.jpg'),
