@@ -11,7 +11,7 @@ class Minesweepergame:
     pygame.font.init()
     pygame.mixer.init()
 
-    font    = pygame.font.SysFont('mainfont', 25)
+    font    = pygame.font.SysFont('timer', 30)
     sprites = {
         '1': pygame.image.load('minesweeper/sprites/1.jpg'),
         '2': pygame.image.load('minesweeper/sprites/2.jpg'),
@@ -102,7 +102,7 @@ class Minesweepergame:
         surface_width = self.screen.get_size()[0]
 
         text = self.font.render("You Win!", False, GRAY)
-        self.screen.blit(text, (surface_width - 90, 5))
+        self.screen.blit(text, (surface_width - 110, 5))
 
         for cell in self.minefield.cells.values():
             if cell.role == 'mine':
@@ -115,7 +115,7 @@ class Minesweepergame:
         surface_width = self.screen.get_size()[0]
 
         text = self.font.render("You Lose!", False, GRAY)
-        self.screen.blit(text, (surface_width - 90, 5))
+        self.screen.blit(text, (surface_width - 110, 5))
 
         for cell in self.minefield.cells.values():
             if cell.role == 'mine' and cell.status != 'flagged':
