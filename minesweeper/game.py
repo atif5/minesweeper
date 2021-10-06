@@ -9,6 +9,7 @@ from .timer import Timer
 
 class Minesweepergame:
     pygame.font.init()
+    pygame.mixer.init()
 
     font    = pygame.font.SysFont('mainfont', 25)
     sprites = {
@@ -26,6 +27,12 @@ class Minesweepergame:
         'flag' : pygame.image.load('minesweeper/sprites/flag.png'),
         'icon' : pygame.image.load('minesweeper/sprites/icon.png'),
         'shown': pygame.image.load('minesweeper/sprites/shown.jpg')}
+    
+    sounds = {
+        'zap': pygame.mixer.Sound('minesweeper/sound/zap.wav'),
+        
+        'success': pygame.mixer.Sound('minesweeper/sound/success.wav'),
+        'failure': pygame.mixer.Sound('minesweeper/sound/failure.wav')}
 
     def __init__(self, minefield):
         self.clicks = 0
@@ -33,8 +40,9 @@ class Minesweepergame:
 
         self.timer = Timer(0, self.font)
         self.game_over = False
+        self.channel = pygame.mixer.Channel(0)
 
-        pygame.display.set_caption('minesweeper')
+        pygame.display.set_caption('Minesweeper')
         pygame.display.set_icon(self.sprites['icon'])
 
         self.screen = pygame.display.set_mode((
@@ -58,7 +66,10 @@ class Minesweepergame:
             cell.handle_drawing(self.screen, mouse_pos)
 
     def on_left_click(self, mouse_pos):
-        self.clicks += 1
+        if not self.channel.get_busy():
+            self.sounds['zap'].play()
+
+        self.clicks += 1   
         for cell in self.minefield.cells.values():
             if cell.rect.collidepoint(mouse_pos):
                 if self.clicks == 1:
@@ -98,6 +109,8 @@ class Minesweepergame:
                 cell.surface = self.sprites['shown']
                 cell.handle_drawing(self.screen, None)
 
+        self.sounds['success'].play()
+
     def player_lost(self):
         surface_width = self.screen.get_size()[0]
 
@@ -109,6 +122,8 @@ class Minesweepergame:
                 cell.reveal(self.minefield.cells, self.sprites)
             elif cell.role == 'mine' and cell.status == 'flagged':
                 cell.surface = self.sprites['shown']
+        
+        self.sounds['failure'].play()
 
     def explore(self, clicked_cell):
         clicked_cell.reveal(self.minefield.cells, self.sprites)
