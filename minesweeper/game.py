@@ -136,7 +136,7 @@ class Minesweepergame:
         for cell in explored_cells:
             cell.reveal(self.minefield.cells, self.sprites)
 
-        for _ in range(30): # recursiveness
+        for _ in range(50): # recursiveness
             for cell in explored_cells:
                 if cell.role == 'number':
                     continue
