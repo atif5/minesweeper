@@ -17,7 +17,7 @@ def main():
         except IndexError:
             exit('please specify the mine amount!')
 
-        if minefield.mine_amount >= minefield.cell_amount:
+        if minefield.mine_amount >= minefield.cell_amount - 8:
             sys.exit('invalid configuration!')
 
     game = Minesweepergame(minefield)
