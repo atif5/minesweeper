@@ -96,7 +96,7 @@ class Minesweepergame:
         for cell in self.minefield.cells.values():
             if cell.role == 'mine':
                 cell.surface = self.sprites['shown']
-                cell.exist(self.screen)
+                cell.handle_drawing(self.screen, None)
 
     def player_lost(self):
         surface_width = self.screen.get_size()[0]
