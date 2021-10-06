@@ -28,12 +28,11 @@ class Cell():
         self.handle_neighbours(grid)
 
     def handle_neighbours(self, grid):
-        grid_side_length = grid.width
 
-        if self.num % grid_side_length == 0:
+        if self.num % grid.width == 0:
             self.is_side_cell = 'left'
 
-        elif (self.num + 1) % grid_side_length == 0:
+        elif (self.num + 1) % grid.width == 0:
             self.is_side_cell = 'right'
 
         else:
@@ -41,29 +40,29 @@ class Cell():
 
         if self.is_side_cell == 'left':
             neighbour_nums = [
-                self.num - grid_side_length,
-                self.num - grid_side_length + 1,
+                self.num - grid.width,
+                self.num - grid.width + 1,
                 self.num + 1,
-                self.num + grid_side_length,
-                self.num + grid_side_length + 1]
+                self.num + grid.width,
+                self.num + grid.width + 1]
 
         elif self.is_side_cell == 'right':
             neighbour_nums = [
-                self.num + grid_side_length,
-                self.num + grid_side_length - 1,
+                self.num + grid.width,
+                self.num + grid.width - 1,
                 self.num - 1,
-                self.num - grid_side_length - 1,
-                self.num - grid_side_length]
+                self.num - grid.width - 1,
+                self.num - grid.width]
 
         else:
             neighbour_nums = [
-                self.num - grid_side_length - 1,
-                self.num - grid_side_length,
-                self.num - grid_side_length + 1,
+                self.num - grid.width - 1,
+                self.num - grid.width,
+                self.num - grid.width + 1,
                 self.num + 1,
-                self.num + grid_side_length + 1,
-                self.num + grid_side_length,
-                self.num + grid_side_length - 1,
+                self.num + grid.width + 1,
+                self.num + grid.width,
+                self.num + grid.width - 1,
                 self.num - 1]
 
         self.neighbour_names = [
