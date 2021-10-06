@@ -11,7 +11,7 @@ class Timer():
         self.time = time_
 
         self.surface = self.font.render(
-            'Time: 0', False, (255, 110, 0))
+            'Time: -------------', False, (255, 110, 0))
         self.rect = self.surface.get_rect().move((0, 5))
 
     def run_and_draw(self, surface, dest, frequency):
