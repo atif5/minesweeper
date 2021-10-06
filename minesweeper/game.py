@@ -105,8 +105,10 @@ class Minesweepergame:
         self.screen.blit(text, (surface_width - 90, 5))
 
         for cell in self.minefield.cells.values():
-            if cell.role == 'mine':
+            if cell.role == 'mine' and cell.status != 'flagged':
                 cell.reveal(self.minefield.cells, self.sprites)
+            elif cell.role == 'mine' and cell.status == 'flagged':
+                cell.surface = self.sprites['shown']
 
     def explore(self, clicked_cell):
         clicked_cell.reveal(self.minefield.cells, self.sprites)
