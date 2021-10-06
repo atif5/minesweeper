@@ -5,6 +5,7 @@ import pygame
 
 RED  = (255,   0,   0)
 GRAY = (171, 174, 171)
+SILVER = (192, 192, 192)
 
 class Cell():
     def __init__(self, status, role, num, grid, size=(50, 50)):
@@ -68,7 +69,15 @@ class Cell():
         self.neighbour_names = [
             f"cell{i}" for i in neighbour_nums if i > -1 and i < grid.cell_amount]
 
-    def exist(self, surface):
+    def handle_drawing(self, surface, mouse_pos):
+        if self.status == 'unrevealed':
+            if self.rect.collidepoint(mouse_pos):
+                self.surface.fill(SILVER)
+
+            else:
+                if self.surface.get_at((0, 0)) == (SILVER):
+                    self.surface.fill(GRAY)
+        
         surface.blit(self.surface, self.position)
         pygame.draw.rect(surface, RED, self.rect, width=3)
 

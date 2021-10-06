@@ -53,14 +53,12 @@ class Minesweepergame:
             self.game_over = True
             self.player_won()
 
-    def handle_drawing(self):
+    def handle_drawing(self, mouse_pos):
         for cell in self.minefield.cells.values():
-            cell.exist(self.screen)
+            cell.handle_drawing(self.screen, mouse_pos)
 
-    def on_left_click(self):
+    def on_left_click(self, mouse_pos):
         self.clicks += 1
-        mouse_pos = pygame.mouse.get_pos()
-
         for cell in self.minefield.cells.values():
             if cell.rect.collidepoint(mouse_pos):
                 if self.clicks == 1:
@@ -79,9 +77,7 @@ class Minesweepergame:
                     self.player_lost()
 
 
-    def on_right_click(self):
-        mouse_pos = pygame.mouse.get_pos()
-
+    def on_right_click(self, mouse_pos):
         for cell in self.minefield.cells.values():
             if not cell.rect.collidepoint(mouse_pos):
                 continue
@@ -145,14 +141,16 @@ class Minesweepergame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit(pygame.quit() or 0)
+                
+            mouse_pos = pygame.mouse.get_pos()
 
             if pygame.mouse.get_pressed()[0]:
-                self.on_left_click()
+                self.on_left_click(mouse_pos)
 
             elif pygame.mouse.get_pressed()[2]:
-                self.on_right_click()
+                self.on_right_click(mouse_pos)
 
-            self.handle_drawing()
+            self.handle_drawing(mouse_pos)
             self.check_if_player_won()
 
             pygame.display.flip()
