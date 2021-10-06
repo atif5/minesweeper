@@ -15,7 +15,7 @@ def main():
                 size=eval(sys.argv[2]),
                 mine_amount=int(sys.argv[3]))
         except IndexError:
-            exit('please specify the mine amount!')
+            sys.exit('please specify the mine amount!')
 
         if minefield.mine_amount >= minefield.cell_amount - 8:
             sys.exit('invalid configuration!')
