@@ -5,7 +5,9 @@ import pygame
 
 from .grid import (
     Cell, MineFieldGrid, RED, GRAY)
-from .timer import Timer
+from .timer import (
+    Timer, WHITE, BLACK)
+
 
 class Minesweepergame:
     pygame.font.init()
@@ -26,10 +28,12 @@ class Minesweepergame:
         'empty': pygame.image.load('minesweeper/sprites/empty.png'),
         'flag' : pygame.image.load('minesweeper/sprites/flag.png'),
         'icon' : pygame.image.load('minesweeper/sprites/icon.png'),
-        'shown': pygame.image.load('minesweeper/sprites/shown.jpg')}
+        'shown': pygame.image.load('minesweeper/sprites/shown.jpg'),
+        'flag_silver' : pygame.image.load('minesweeper/sprites/flag_silver.png')}
     
     sounds = {
         'zap': pygame.mixer.Sound('minesweeper/sound/zap.wav'),
+        'zap2': pygame.mixer.Sound('minesweeper/sound/zap2.wav'),
         
         'success': pygame.mixer.Sound('minesweeper/sound/success.wav'),
         'failure': pygame.mixer.Sound('minesweeper/sound/failure.wav')}
@@ -63,7 +67,28 @@ class Minesweepergame:
 
     def handle_drawing(self, mouse_pos):
         for cell in self.minefield.cells.values():
-            cell.handle_drawing(self.screen, mouse_pos)
+            cell.handle_drawing(self.screen, self.sprites, mouse_pos)
+
+    def highlight_time(self):
+        w1, h1 = self.screen.get_size()
+
+        for i in range(30, int((w1+h1)/10)):
+            w2, h2 = self.timer.surface.get_size()
+            
+            self.screen.fill(WHITE)
+            self.screen.fill(BLACK)
+
+            self.screen.blit(self.timer.surface, 
+                (w1/2-w2/2, h1/2-h2/2)
+                )
+
+            self.timer.font = pygame.font.SysFont('timer', i)
+            self.timer.surface = self.timer.font.render(
+                    self.timer.text(),
+                    False,
+                    GRAY)
+
+            pygame.display.flip()
 
     def on_left_click(self, mouse_pos):
         if not self.channel.get_busy():
@@ -87,8 +112,10 @@ class Minesweepergame:
                     self.game_over = True
                     self.player_lost()
 
-
     def on_right_click(self, mouse_pos):
+        if not self.channel.get_busy():
+            self.sounds['zap2'].play()
+
         for cell in self.minefield.cells.values():
             if not cell.rect.collidepoint(mouse_pos):
                 continue
@@ -99,6 +126,7 @@ class Minesweepergame:
         time.sleep(0.15)
 
     def player_won(self):
+        self.timer.stop()
         surface_width = self.screen.get_size()[0]
 
         text = self.font.render("You Win!", False, GRAY)
@@ -107,9 +135,13 @@ class Minesweepergame:
         for cell in self.minefield.cells.values():
             if cell.role == 'mine':
                 cell.surface = self.sprites['shown']
-                cell.handle_drawing(self.screen, None)
+                cell.handle_drawing(self.screen, None, (0,0))
+
+        pygame.display.flip()
 
         self.sounds['success'].play()
+        time.sleep(2)
+        self.highlight_time()
 
     def player_lost(self):
         surface_width = self.screen.get_size()[0]
@@ -122,8 +154,9 @@ class Minesweepergame:
                 cell.reveal(self.minefield.cells, self.sprites)
             elif cell.role == 'mine' and cell.status == 'flagged':
                 cell.surface = self.sprites['shown']
-        
+
         self.sounds['failure'].play()
+        self.timer.stop()
 
     def explore(self, clicked_cell):
         clicked_cell.reveal(self.minefield.cells, self.sprites)
@@ -172,5 +205,6 @@ class Minesweepergame:
 
             pygame.display.flip()
 
-        pygame.display.flip()
         time.sleep(2)
+
+        print('Thanks for playing!')

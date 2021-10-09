@@ -3,6 +3,7 @@
 import random
 import pygame
 
+
 RED  = (255,   0,   0)
 GRAY = (171, 174, 171)
 SILVER = (192, 192, 192)
@@ -69,14 +70,20 @@ class Cell():
         self.neighbour_names = [
             f"cell{i}" for i in neighbour_nums if i > -1 and i < grid.cell_amount]
 
-    def handle_drawing(self, surface, mouse_pos):
-        if self.status == 'unrevealed':
-            if self.rect.collidepoint(mouse_pos):
+    def handle_drawing(self, surface, sprites, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            if self.status == 'unrevealed':
                 self.surface.fill(SILVER)
 
-            else:
-                if self.surface.get_at((0, 0)) == (SILVER):
-                    self.surface.fill(GRAY)
+            elif self.status == 'flagged':
+                self.surface = sprites['flag_silver']
+    
+        else:
+            if self.surface.get_at((0, 0)) == SILVER and self.status == 'unrevealed':
+                self.surface.fill(GRAY)
+            
+            elif self.surface.get_at((0,0)) == SILVER and self.status == 'flagged':
+                self.surface = sprites['flag']
         
         surface.blit(self.surface, self.position)
         pygame.draw.rect(surface, RED, self.rect, width=3)
@@ -101,7 +108,7 @@ class Cell():
     def handle_flagging(self, sprites):
         if self.status != 'flagged':
             self.status = 'flagged'
-            self.surface = sprites['flag']
+            self.surface = sprites['flag_silver']
 
         else:
             self.status = 'unrevealed'
