@@ -6,7 +6,7 @@ execute it as a package:
 
 ```$ python3 -m minesweeper```
 
-this creates game session with a 8x8 minefield that has 10 bombs by default.
+this creates game session with a 8x8 minefield that has 10 mines by default.
 
 you can create custom minefields as well.
 
