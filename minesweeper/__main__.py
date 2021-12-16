@@ -7,18 +7,31 @@ from .game import (
 
 
 def main():
-    minefield = MineFieldGrid()
-
     if len(sys.argv) > 1 and sys.argv[1] in ['-c', '--custom']:
         try:
-            minefield = MineFieldGrid(
-                size=eval(sys.argv[2]),
-                mine_amount=int(sys.argv[3]))
+            x = int(sys.argv[2])
+            y = int(sys.argv[3])
+            mines = int(sys.argv[4])
+
         except IndexError:
             sys.exit('please specify the mine amount!')
 
+        if x > 38 or y > 19:
+            det = max(x, y)
+            minefield = MineFieldGrid(
+                size=(x, y),
+                mine_amount=mines, cell_size=(int((9/det)*110), int((9/det)*110)))
+
+        else:
+            minefield = MineFieldGrid(
+                size=(x, y),
+                mine_amount=mines)
+
         if minefield.mine_amount >= minefield.cell_amount - 8:
             sys.exit('invalid configuration!')
+
+    else:
+        minefield = MineFieldGrid()
 
     game = Minesweepergame(minefield)
     game.main_loop()

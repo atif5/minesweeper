@@ -4,9 +4,10 @@ import random
 import pygame
 
 
-RED  = (255,   0,   0)
+RED = (255,   0,   0)
 GRAY = (171, 174, 171)
 SILVER = (192, 192, 192)
+
 
 class Cell():
     def __init__(self, status, role, num, grid, size=(50, 50)):
@@ -21,7 +22,7 @@ class Cell():
         self.surface.fill(GRAY)
 
         self.position = (
-            self.size[0] * (self.num %  grid.width),
+            self.size[0] * (self.num % grid.width),
             self.size[0] * (self.num // grid.width) + 30)
 
         self.rect = self.surface.get_rect()
@@ -30,7 +31,6 @@ class Cell():
         self.handle_neighbours(grid)
 
     def handle_neighbours(self, grid):
-
         if self.num % grid.width == 0:
             self.is_side_cell = 'left'
 
@@ -77,16 +77,16 @@ class Cell():
 
             elif self.status == 'flagged':
                 self.surface = sprites['flag_silver']
-    
+
         else:
             if self.surface.get_at((0, 0)) == SILVER and self.status == 'unrevealed':
                 self.surface.fill(GRAY)
-            
-            elif self.surface.get_at((0,0)) == SILVER and self.status == 'flagged':
+
+            elif self.surface.get_at((0, 0)) == SILVER and self.status == 'flagged':
                 self.surface = sprites['flag']
-        
+
         surface.blit(self.surface, self.position)
-        pygame.draw.rect(surface, RED, self.rect, width=3)
+        pygame.draw.rect(surface, RED, self.rect, width=2)
 
     def reveal(self, cells, sprites):
         self.status = 'revealed'
@@ -127,11 +127,11 @@ class MineFieldGrid():
 
         self.cells = {
             f"cell{i}": Cell(
-                status = 'unrevealed',
-                role   = None,
-                num    = i,
-                grid   = self,
-                size   = cell_size) for i in range(self.cell_amount)}
+                status='unrevealed',
+                role=None,
+                num=i,
+                grid=self,
+                size=cell_size) for i in range(self.cell_amount)}
 
     def generate_field(self, starting_cell):
         ints_to_choose = list(range(self.cell_amount))

@@ -13,7 +13,7 @@ class Minesweepergame:
     pygame.font.init()
     pygame.mixer.init()
 
-    font    = pygame.font.SysFont('timer', 30)
+    font = pygame.font.SysFont('timer', 30)
     sprites = {
         '1': pygame.image.load('minesweeper/sprites/1.jpg'),
         '2': pygame.image.load('minesweeper/sprites/2.jpg'),
@@ -24,17 +24,17 @@ class Minesweepergame:
         '7': pygame.image.load('minesweeper/sprites/7.jpg'),
         '8': pygame.image.load('minesweeper/sprites/8.jpg'),
 
-        'mine' : pygame.image.load('minesweeper/sprites/mine.png'),
+        'mine': pygame.image.load('minesweeper/sprites/mine.png'),
         'empty': pygame.image.load('minesweeper/sprites/empty.png'),
-        'flag' : pygame.image.load('minesweeper/sprites/flag.png'),
-        'icon' : pygame.image.load('minesweeper/sprites/icon.png'),
+        'flag': pygame.image.load('minesweeper/sprites/flag.png'),
+        'icon': pygame.image.load('minesweeper/sprites/icon.png'),
         'shown': pygame.image.load('minesweeper/sprites/shown.jpg'),
-        'flag_silver' : pygame.image.load('minesweeper/sprites/flag_silver.png')}
-    
+        'flag_silver': pygame.image.load('minesweeper/sprites/flag_silver.png')}
+
     sounds = {
         'zap': pygame.mixer.Sound('minesweeper/sound/zap.wav'),
         'zap2': pygame.mixer.Sound('minesweeper/sound/zap2.wav'),
-        
+
         'success': pygame.mixer.Sound('minesweeper/sound/success.wav'),
         'failure': pygame.mixer.Sound('minesweeper/sound/failure.wav')}
 
@@ -52,6 +52,11 @@ class Minesweepergame:
         self.screen = pygame.display.set_mode((
             minefield.width * minefield.cell_size[0],
             minefield.height * minefield.cell_size[1] + 30))
+
+        for name in self.sprites:
+            rsprite = self.sprites[name]
+            self.sprites[name] = pygame.transform.scale(
+                rsprite, self.minefield.cell_size)
 
     def check_if_player_won(self):
         flagged_mines = sum([
@@ -71,22 +76,27 @@ class Minesweepergame:
 
     def highlight_time(self):
         w1, h1 = self.screen.get_size()
+        w2, h2 = 0, 0
 
-        for i in range(30, int((w1+h1)/10)):
+        i = 0
+
+        while not w2 > w1-20:
             w2, h2 = self.timer.surface.get_size()
-            
+
             self.screen.fill(WHITE)
             self.screen.fill(BLACK)
 
-            self.screen.blit(self.timer.surface, 
-                (w1/2-w2/2, h1/2-h2/2)
-                )
+            self.screen.blit(self.timer.surface,
+                             (w1/2-w2/2, h1/2-h2/2)
+                             )
 
             self.timer.font = pygame.font.SysFont('timer', i)
             self.timer.surface = self.timer.font.render(
-                    self.timer.text(),
-                    False,
-                    GRAY)
+                self.timer.text(),
+                False,
+                GRAY)
+
+            i += 1
 
             pygame.display.flip()
 
@@ -94,7 +104,7 @@ class Minesweepergame:
         if not self.channel.get_busy():
             self.sounds['zap'].play()
 
-        self.clicks += 1   
+        self.clicks += 1
         for cell in self.minefield.cells.values():
             if cell.rect.collidepoint(mouse_pos):
                 if self.clicks == 1:
@@ -135,7 +145,7 @@ class Minesweepergame:
         for cell in self.minefield.cells.values():
             if cell.role == 'mine':
                 cell.surface = self.sprites['shown']
-                cell.handle_drawing(self.screen, None, (0,0))
+                cell.handle_drawing(self.screen, None, (0, 0))
 
         pygame.display.flip()
 
@@ -161,7 +171,7 @@ class Minesweepergame:
     def explore(self, clicked_cell):
         clicked_cell.reveal(self.minefield.cells, self.sprites)
         starting_num = clicked_cell.num
-        explored_cells = []
+        explored_cells = list()
 
         for neighbour_name in clicked_cell.neighbour_names:
             explored_cells.append(self.minefield.cells[neighbour_name])
@@ -169,29 +179,27 @@ class Minesweepergame:
         for cell in explored_cells:
             cell.reveal(self.minefield.cells, self.sprites)
 
-        for _ in range(50): # recursiveness
-            for cell in explored_cells:
-                if cell.role == 'number':
+        for cell in explored_cells:
+            if cell.role == 'number':
+                continue
+
+            for neighbour_name in cell.neighbour_names:
+                neighbour_cell = self.minefield.cells[neighbour_name]
+
+                if neighbour_cell.role == 'mine' or neighbour_cell in explored_cells:
                     continue
 
-                for neighbour_name in cell.neighbour_names:
-                    neighbour_cell = self.minefield.cells[neighbour_name]
-
-                    if neighbour_cell.role == 'mine':
-                        continue
-
-                    explored_cells.append(neighbour_cell)
-                    explored_cells = list(set(explored_cells))
-                    neighbour_cell.reveal(self.minefield.cells, self.sprites)
+                explored_cells.append(neighbour_cell)
+                neighbour_cell.reveal(self.minefield.cells, self.sprites)
 
     def main_loop(self):
-        self.timer.start(self.screen, (0,5), 1)
+        self.timer.start(self.screen, (0, 5), 1)
 
         while not self.game_over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit(pygame.quit() or 0)
-                
+
             mouse_pos = pygame.mouse.get_pos()
 
             if pygame.mouse.get_pressed()[0]:
