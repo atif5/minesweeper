@@ -12,15 +12,15 @@ you can create custom minefields as well.
 
 
 #### custom minefields
-now you can create custom minefields, game sessions using:
+now you can create custom minefields, game sessions using `-c` or `--custom`:
 
-```$ python3 -m minesweeper -c "(w, h)" mine_amount```
+```$ python3 -m minesweeper -c w h mine_amount```
 
-`w` and `h` being the width and height of the minefield and `mine_amount` being an `int` and well... no need for further explanation.
+`w` and `h` being the width and height of the minefield and `mine_amount` being an `int` indicating the desired amount of mines in the minefield.
 
 example:
 
-```$ python3 -m minesweeper -c "(20, 15)" 30```
+```$ python3 -m minesweeper --custom 20 15 30```
 
 creates a minefield with the size 20x15 that has 30 mines.
 
