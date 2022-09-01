@@ -194,8 +194,9 @@ class Minesweepergame:
 
     def main_loop(self):
         self.timer.start(self.screen, (0, 5), 1)
-
+        clock = pygame.time.Clock()
         while not self.game_over:
+            clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit(pygame.quit() or 0)
